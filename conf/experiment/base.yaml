@@ -1,0 +1,90 @@
+# @package _global_
+
+# Experiment identity
+prefix_name: ""                                                 # Optional prefix prepended to experiment name (useful for sweep tags).
+exp_name: "${prefix_name}${hydra:runtime.choices.experiment}"   # Final experiment name used by logging/checkpoint code.
+
+# Paths and outputs
+vqgan_folder: "./ckpt/wan21/"                                    # Folder containing VAE/VQ model weights (WAN 2.1 file expected inside).
+vit_folder: "./ckpt/default/"                                    # Output folder for transformer checkpoints and training artifacts.
+writer_log: "./tensorboard/default/"                             # TensorBoard log directory; empty disables/uses default behavior.
+data_folder: "./real_videos"                                     # Root data path (raw MP4 folder, latent folder, or list root depending on `data`).
+train_list: ""                                                   # Path to train split list file (one sample path per line).
+val_list: ""                                                     # Path to validation split list file.
+eval_folder: "./real_videos"                                     # Folder/list used for evaluation-only generation and metric computation, has to be mp4!
+gen_eval_out_dir: ""                                             # Output directory for generated evaluation videos.
+
+# Runtime mode and execution control
+mode: "img-to-vid"                                               # Task mode selector (currently image-to-video flow matching trainer).
+test_only: false                                                 # If true, skip fitting and run evaluation/inference paths only.
+gen_eval_video_only: false                                       # If true, only export evaluation videos (no training loop).
+gen_eval_num_video: 500                                          # Number of videos to generate in eval-video-only mode.
+gen_eval_tot_frames: 25                                          # Number of frames per generated evaluation video.
+gen_eval_num_step: 50                                            # Sampler denoising/integration steps for eval-video-only generation.
+debug: false                                                     # If true, initialize pipeline but stop before training/eval loops.
+resume: true                                                     # Resume from latest checkpoint in `vit_folder/ckpt` when available.
+compile: false                                                   # Enable torch.compile on the transformer model.
+resume_load_optimizer: false                                     # Load optimizer state when resuming from checkpoint.
+
+# Dataset and dataloader settings
+data: "mp4"                                                      # Dataset mode (`natix`, `natix_feat`, `nuscenes`, `mp4`, ...).
+num_workers: 8                                                   # Dataloader worker processes per rank.
+img_size: [320, 416]                                             # Pixel-space frame resolution [H, W] used by resize transforms.
+seed: -1                                                         # Global random seed; negative value means no deterministic seeding.
+global_bsize: 32                                                 # Effective total batch size across all GPUs before per-rank split.
+data_fraction: 1.0                                               # Fraction of training data to keep for scaling experiments (0-1].
+
+# Model architecture
+vit_size: "giant"                                                 # Transformer size preset (maps to hidden dim/depth/heads in trainer code).
+dtype: "bfloat16"                                                # Compute dtype used for autocast/mixed precision (e.g., bfloat16).
+vq_type: "wan21"                                                 # Autoencoder type key (`wan21` loads WAN VAE wrapper).
+proj: 2                                                          # Temporal projection factor used by model blocks.
+register: 1                                                      # Number of register tokens/features (model-specific architectural knob).
+dropout: 0.05                                                    # Dropout probability inside transformer blocks.
+input_size: [16, 7, 40, 52]                                      # Latent tensor shape expected by transformer: [C, T, H, W].
+n_frames: 25                                                     # Number of output video frames targeted by the training/eval pipeline.
+cameras: "FRONT"                                                 # Space-separated camera names to load/concatenate (e.g., FRONT LEFT RIGHT). Currently only supports single-camera setups.
+is_causal: false                                                 # Enables causal masking behavior in transformer attention when true.
+optimizer: "adamw"                                               # Optimizer choice string consumed by trainer (`adamw`, etc.).
+
+# Optimization and training loop
+epoch: 10000                                                     # Maximum outer-loop epochs (virtual; can stop earlier via `max_iter`).
+max_iter: 400000                                                 # Hard cap on optimizer update iterations.
+virtual_epoch: 5000                                              # Number of train iterations processed per call to `train_one_epoch`.
+grad_cum: 1                                                      # Gradient accumulation steps before optimizer update.
+lr: 0.0001                                                       # Base learning rate.
+lr_scheduler_mode: "constant"                                    # LR scheduler strategy (`constant`, `cosine`, etc. as implemented).
+warm_up: 25000                                                   # Learning-rate warmup length in optimizer steps.
+weight_decay: 0.01                                               # AdamW-style weight decay factor.
+grad_clip: 1.0                                                   # Gradient clipping max norm.
+drop_label: 0.1                                                  # Probability/magnitude for label dropping in conditioned setups.
+pred_mode: "v"                                                   # Model prediction target: `x` (clean), `v` (velocity), or `e` (noise).
+loss_mode: "v"                                                   # Loss target space: `x`, `v`, or `e`.
+use_ema: true                                                    # Enable exponential moving average model for eval/sampling.
+ema_decay: 0.9995                                                # EMA decay coefficient.
+mu: -0.7                                                         # Mean of logistic-normal timestep sampling distribution.
+sigma: 1.4                                                       # Std of logistic-normal timestep sampling distribution.
+
+# Evaluation, logging, and checkpoint cadence
+eval_max_iter: -1                                                # Validation loop cap per epoch (-1 means full validation set).
+metrics_eval: 5                                                  # Run expensive metric evaluation every N epochs (0 disables).
+log_iter: 10000                                                  # Interval (iterations) for logging reconstructions/samples.
+save_iter: 10000                                                 # Interval (iterations) for checkpoint saves.
+save_model: true                                                 # Master switch for checkpoint saving.
+
+# Distributed training settings
+dist_backend: "ddp"                                              # Distributed backend wrapper (`ddp` or `fsdp`).
+fsdp_sharding: "full_shard"                                      # FSDP sharding mode when `dist_backend=fsdp`.
+fsdp_use_orig_params: true                                       # Keep original parameter objects in FSDP wrapper.
+fsdp_limit_all_gathers: true                                     # Limit all-gather bursts to reduce peak memory in FSDP.
+fsdp_cpu_offload: false                                          # Offload FSDP parameters to CPU between operations.
+fsdp_activation_checkpointing: false                             # Apply activation checkpointing to transformer blocks under FSDP.
+
+# Sampling and generation
+step: 100                                                        # Default sampling steps for generation helper/evaluation calls.
+scheduler_mode: "cosine"                                         # Sampling time schedule (`cosine`, `square`, `linear`).
+
+# Trajectory conditioning
+use_trajectory_cond: false                                       # Condition generation on an ego-trajectory (per-frame AdaLN injection). Also enables, for training: the auxiliary waypoint head (weight 0.1), SavGol smoothing of the waypoints, 50% horizontal-flip augmentation, and a weight_decay=0 optimizer group for the `trajectory_*` parameters.
+trajectory_length: 25                                            # Number of (x, y) waypoints per clip; (trajectory_length-1) must be divisible by (input_size[1]-1).
+trajectory_cond_prob: 0.85                                       # Probability of keeping the trajectory during training; dropout enables guidance.

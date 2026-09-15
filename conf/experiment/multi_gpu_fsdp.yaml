@@ -1,0 +1,12 @@
+# @package _global_
+
+defaults:
+  - base
+  - _self_
+
+dist_backend: "fsdp"
+fsdp_sharding: "full_shard"
+fsdp_use_orig_params: true
+fsdp_limit_all_gathers: true
+fsdp_cpu_offload: false
+fsdp_activation_checkpointing: false

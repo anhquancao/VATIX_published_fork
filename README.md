@@ -1,28 +1,196 @@
-# How Far Can 5,500 Hours of Driving Take You? A Scaling Law Analysis of Video Diffusion Models
+<div align="center">
 
-[![Workshop](https://img.shields.io/badge/Workshop-DriveX%20%40%20ECCV%202026-blue)](#)
-[![Paper](https://img.shields.io/badge/Paper-PDF-red)](#)
-[![Models](https://img.shields.io/badge/Models-Coming%20Soon-orange)](#)
+# VATIX
 
-> **Accepted at the 6th DriveX Workshop in conjunction with ECCV 2026**
+### Scaling laws for flow-matching video diffusion models
 
-This is the official repository for the paper **"How Far Can 5,500 Hours of Driving Take You? A Scaling Law Analysis of Video Diffusion Models"**. 
+Train, evaluate, and generate driving videos with latent video models from
+1.6M to 9B parameters.
 
-**Authors:** Victor Besnier, Anh-Quan Cao, Elias Ramzi, Spyros Gidaris, Tuan-Hung Vu, Andrei Bursuc, Eloi Zablocki, and Matthieu Cord.
-**Affiliation:** Valeo, Valeo.ai, Paris.
+[![Project page](https://img.shields.io/badge/Project%20page-VATIX-1f6feb)](https://valeoai.github.io/VATIX/)
+[![Paper](https://img.shields.io/badge/Paper-arXiv-b31b1b)](https://arxiv.org/abs/2608.28404)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab)](https://www.python.org/)
+[![Models](https://img.shields.io/badge/Models-Hugging%20Face-ffcc4d)](https://huggingface.co/llvictorll/VATIX)
 
----
+**Official implementation** · Oral presentation at the 6th DriveX Workshop,
+in conjunction with ECCV 2026
 
-## 🚧 Status: Code and Models Coming Soon!
-**The code and pretrained models for the VATIX model family will be publicly released shortly**. Please star or watch this repository for updates.
+</div>
 
-## 📖 Overview
-Video generation for autonomous driving cannot follow the web-scale route: driving data is expensive to collect, bound by privacy requirements, and cannot be scraped at will, meaning models must make the most of a fixed corpus. 
+## 🔎 At a glance
 
-We present a systematic scaling-law study of video diffusion models trained from scratch on driving data. We trained a family of Diffusion Transformer (DiT) flow-matching models ranging from 1.6M to 9B parameters, using up to 5,500 hours of driving data. 
+VATIX studies how validation loss changes with model size, training exposure,
+and compute when training on 5,500 hours of real-world driving data.
 
-### Key Findings
-* **Consistent Scaling Laws:** Validation loss follows consistent power laws in both model size and training exposure. 
-* **Compute Optimization:** Loss improves much faster with training exposure than with model size, making longer training the most effective way to improve a fixed model under limited compute.
-* **The Value of Scale:** Larger models continue to achieve lower asymptotic loss, meaning compute-optimal scaling still favors increasing model size when sufficient compute and data are available.
----
+| Finding | Result |
+| --- | --- |
+| Training exposure | The strongest source of gains under limited compute, with $\alpha_D \approx 0.74$ |
+| Model size | Larger models reach lower asymptotic loss, with $\alpha_N \approx 0.21$ |
+| Compute allocation | As compute increases, scaling shift from longer training to larger model sizes |
+| Extrapolation | A law fitted through 1.1B parameters predicts the 9B model within 3.6% relative error |
+
+### 📈 Model-size comparison
+
+Sample from `19M` to `9B` parameters, showing the improvement as model size increases.
+
+<p align="center">
+  <img src="statics/rank00_vstack.gif" alt="Generated video samples showing improvement from the 19M model to the 9B model">
+</p>
+
+### 🛣️ Trajectory-conditioned samples
+
+The same context frame is generated under four commands: `left`, `right`,
+`straight`, and `static`.
+
+<p align="center">
+  <img src="statics/command_panel_sample1_north_carolina.gif" alt="Trajectory-conditioned samples from North Carolina">
+</p>
+<p align="center">
+  <img src="statics/command_panel_sample0_california.gif" alt="Trajectory-conditioned samples from California">
+</p>
+
+## ✨ What you can do
+
+- Train latent flow-matching video models with Hydra.
+- Run single-GPU, DDP, FSDP, or Slurm jobs.
+- Extract WAN latents from raw videos.
+- Run evaluation on generated folders or produce evaluation videos.
+- Steer generation with an ego-trajectory, using classifier-free guidance.
+
+## ⚙️ Install
+
+```text
+.
+├── main.py                      # Main training/evaluation entry point
+├── conf/                        # Hydra configs (base + distributed presets)
+├── vatix/
+│   ├── trainer/                 # Training loop, generation, evaluation helpers
+│   ├── dataset/                 # Dataset and dataloader logic
+│   ├── network/                 # Model architectures + WAN VAE
+│   ├── metrics/                 # FVD/FID/pixel metrics utilities
+│   ├── utils.py                 # Checkpoint utilities
+│   └── scripts/                 # Data/feature extraction scripts
+├── launch/                      # Local + Slurm launch scripts
+├── docs/                        # Extended tutorials and guides
+├── examples/                    # Inference notebooks and examples
+├── statics/                     # Demo/sample media used in README
+├── ckpt/                        # Checkpoints output folder
+└── real_videos/                 # Small raw-video subset folder
+    ├── Nuscenes_random_samples/ #   plain MP4 clips
+    ├── Nuscenes_traj_samples/   #   MP4 clips + matching ego-trajectories
+    └── context_frames/          #   context frames for the trajectory demo
+```
+
+## Installation
+
+Use Python 3.10+.
+
+```bash
+python3 -m venv vatix_env
+source vatix_env/bin/activate
+python -m pip install --upgrade pip setuptools wheel
+pip install -e .
+```
+
+To install the pinned PyTorch packages with the project dependencies:
+
+```bash
+pip install -e ".[torch]"
+```
+
+Download the WAN 2.1 VAE required for training, latent extraction, and
+inference:
+
+```bash
+hf download llvictorll/Vatix wan21/wan_2.1_vae.pth --repo-type model --local-dir ./ckpt
+```
+
+## ▶️ Run
+
+Trajectory-conditioned (example):
+
+```bash
+bash launch/base.sh base data=mp4_traj data_folder=./real_videos/Nuscenes_traj_samples use_trajectory_cond=true global_bsize=2
+```
+
+`use_trajectory_cond=true` also enables, at training time: an auxiliary waypoint-prediction head
+(weight 0.1, dropped on reload), SavGol smoothing of the waypoints, horizontal-flip augmentation,
+and `weight_decay=0` for the trajectory parameters.
+
+Multi-GPU DDP:
+
+```bash
+bash launch/base.sh base
+```
+
+Run trajectory-conditioned training on the included example videos:
+
+```bash
+bash launch/base.sh base \
+  data=mp4_traj \
+  data_folder=./real_videos/Nuscenes_traj_samples \
+  use_trajectory_cond=true \
+  global_bsize=2
+```
+
+Run on four local GPUs:
+
+```bash
+NPROC_PER_NODE=4 bash launch/base.sh multi_gpu_ddp
+```
+
+Hydra overrides can be added after the experiment name. Run commands from the
+repository root so Hydra can resolve `conf/config.yaml`.
+
+## 🧭 Where to go next
+
+- [Project webpage](https://valeoai.github.io/VATIX/) — project overview and
+  generated samples.
+- [Research paper](https://arxiv.org/abs/2608.28404) — scaling laws for video
+  diffusion models trained on driving data.
+- [Full latent-data tutorial](docs/full_tutorial.md) — extract latents, create
+  splits, and train on a small subset.
+- [Technical guide](docs/technical_guide.md) — configuration, data preparation,
+  distributed training, checkpoints, Python inference, and evaluation.
+- [Inference notebook](examples/inference_video_model.ipynb) — interactive
+  video generation.
+- [Licenses](licenses/) — code, model, data, and third-party notices.
+
+## 🗂️ Repository map
+
+```text
+main.py       Training and evaluation entry point
+conf/         Hydra configuration and experiment presets
+vatix/        Dataset, network, trainer, metrics, and scripts
+launch/       Local and Slurm launchers
+docs/         Tutorials and technical documentation
+examples/     Inference notebooks
+statics/      README media
+```
+
+## 💾 Data and models
+
+The pipeline accepts raw MP4 files (`data=natix`) or extracted WAN latent files
+(`data=natix_feat`). The NATIX dataset is access-controlled and non-commercial;
+follow its upstream terms before using it.
+
+Pretrained checkpoints are available from
+[Hugging Face](https://huggingface.co/llvictorll/VATIX). Checkpoint layouts and
+resume commands are documented in the [technical guide](docs/technical_guide.md).
+
+## 📄 Citation
+
+```bibtex
+@inproceedings{besnier2026how,
+  title={How Far Can 5,500 Hours of Driving Take You? A Scaling Law Analysis of Video Diffusion Models},
+  author={Victor Besnier and Anh-Quan Cao and Elias Ramzi and Spyros Gidaris and Tuan-Hung Vu and Andrei Bursuc and Eloi Zablocki and Matthieu Cord},
+  booktitle={[Archival Track] ECCV 2026 DriveX - 6th Workshop on Foundation Models for Autonomous Driving},
+  year={2026},
+  url={https://arxiv.org/abs/2608.28404}
+}
+```
+
+## 🙏 Acknowledgements
+
+VATIX uses components from WAN and the NATIX Multi-Camera Driving Dataset.
+Training used HPC resources from IDRIS and EuroHPC MareNostrum 5.

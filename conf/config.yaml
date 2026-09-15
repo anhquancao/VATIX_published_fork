@@ -1,0 +1,10 @@
+# @package _global_
+
+defaults:
+  - experiment: base
+  - _self_
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

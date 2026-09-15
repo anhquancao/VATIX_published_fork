@@ -1,0 +1,272 @@
+{
+  "clip_00000": {
+    "final_waypoint_m": [
+      0.001,
+      0.0
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151514512404.jpg",
+    "nuscenes_index": 0,
+    "scenario": "IDLE"
+  },
+  "clip_00008": {
+    "final_waypoint_m": [
+      0.021,
+      2.535
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151518512404.jpg",
+    "nuscenes_index": 8,
+    "scenario": "FORWARD_SLOW"
+  },
+  "clip_00013": {
+    "final_waypoint_m": [
+      0.037,
+      8.992
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151520912404.jpg",
+    "nuscenes_index": 13,
+    "scenario": "FORWARD_MED"
+  },
+  "clip_00025": {
+    "final_waypoint_m": [
+      -0.329,
+      20.553
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151526862404.jpg",
+    "nuscenes_index": 25,
+    "scenario": "FORWARD_FAST"
+  },
+  "clip_00036": {
+    "final_waypoint_m": [
+      6.528,
+      11.037
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298005762404.jpg",
+    "nuscenes_index": 36,
+    "scenario": "TURN_RIGHT"
+  },
+  "clip_00205": {
+    "final_waypoint_m": [
+      -3.163,
+      12.226
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281646112460.jpg",
+    "nuscenes_index": 205,
+    "scenario": "TURN_LEFT"
+  },
+  "clip_00678": {
+    "final_waypoint_m": [
+      -3.569,
+      6.278
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-10-08-15-36-50+0800__CAM_FRONT__1538984309412460.jpg",
+    "nuscenes_index": 678,
+    "scenario": "TURN_LEFT"
+  },
+  "clip_01088": {
+    "final_waypoint_m": [
+      -0.416,
+      16.107
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-28-16-43-51-0400__CAM_FRONT__1535489341012404.jpg",
+    "nuscenes_index": 1088,
+    "scenario": "FORWARD_MED"
+  },
+  "clip_01356": {
+    "final_waypoint_m": [
+      0.221,
+      26.185
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-07-24-10-42-41+0800__CAM_FRONT__1532400198612460.jpg",
+    "nuscenes_index": 1356,
+    "scenario": "FORWARD_FAST"
+  },
+  "clip_01467": {
+    "final_waypoint_m": [
+      -0.134,
+      5.42
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657849862404.jpg",
+    "nuscenes_index": 1467,
+    "scenario": "BRAKE"
+  },
+  "clip_01753": {
+    "final_waypoint_m": [
+      0.056,
+      3.382
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730671362404.jpg",
+    "nuscenes_index": 1753,
+    "scenario": "FORWARD_SLOW"
+  },
+  "clip_01914": {
+    "final_waypoint_m": [
+      3.272,
+      15.16
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151425512404.jpg",
+    "nuscenes_index": 1914,
+    "scenario": "TURN_RIGHT"
+  },
+  "clip_02447": {
+    "final_waypoint_m": [
+      -5.867,
+      11.255
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296060912404.jpg",
+    "nuscenes_index": 2447,
+    "scenario": "TURN_LEFT"
+  },
+  "clip_02498": {
+    "final_waypoint_m": [
+      -0.017,
+      17.346
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151073862404.jpg",
+    "nuscenes_index": 2498,
+    "scenario": "FORWARD_MED"
+  },
+  "clip_02560": {
+    "final_waypoint_m": [
+      0.003,
+      -0.001
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296082912404.jpg",
+    "nuscenes_index": 2560,
+    "scenario": "IDLE"
+  },
+  "clip_02856": {
+    "final_waypoint_m": [
+      0.419,
+      24.756
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298098662404.jpg",
+    "nuscenes_index": 2856,
+    "scenario": "FORWARD_FAST"
+  },
+  "clip_03383": {
+    "final_waypoint_m": [
+      0.089,
+      3.804
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537295919412404.jpg",
+    "nuscenes_index": 3383,
+    "scenario": "BRAKE"
+  },
+  "clip_03519": {
+    "final_waypoint_m": [
+      0.285,
+      6.52
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151828012404.jpg",
+    "nuscenes_index": 3519,
+    "scenario": "FORWARD_SLOW"
+  },
+  "clip_03946": {
+    "final_waypoint_m": [
+      4.479,
+      11.023
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537295989012404.jpg",
+    "nuscenes_index": 3946,
+    "scenario": "TURN_RIGHT"
+  },
+  "clip_03976": {
+    "final_waypoint_m": [
+      -0.095,
+      13.556
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296004112404.jpg",
+    "nuscenes_index": 3976,
+    "scenario": "FORWARD_MED"
+  },
+  "clip_04278": {
+    "final_waypoint_m": [
+      0.169,
+      25.695
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151373612404.jpg",
+    "nuscenes_index": 4278,
+    "scenario": "FORWARD_FAST"
+  },
+  "clip_04345": {
+    "final_waypoint_m": [
+      -3.824,
+      3.138
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657720262404.jpg",
+    "nuscenes_index": 4345,
+    "scenario": "TURN_LEFT"
+  },
+  "clip_04700": {
+    "final_waypoint_m": [
+      3.132,
+      10.701
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151585412404.jpg",
+    "nuscenes_index": 4700,
+    "scenario": "TURN_RIGHT"
+  },
+  "clip_05239": {
+    "final_waypoint_m": [
+      0.212,
+      4.715
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799527912460.jpg",
+    "nuscenes_index": 5239,
+    "scenario": "BRAKE"
+  },
+  "clip_05284": {
+    "final_waypoint_m": [
+      -3.218,
+      14.386
+    ],
+    "first_frame": "samples/CAM_FRONT/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151857362404.jpg",
+    "nuscenes_index": 5284,
+    "scenario": "TURN_LEFT"
+  },
+  "clip_05337": {
+    "final_waypoint_m": [
+      0.008,
+      0.074
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201583912460.jpg",
+    "nuscenes_index": 5337,
+    "scenario": "IDLE"
+  },
+  "clip_05343": {
+    "final_waypoint_m": [
+      0.745,
+      7.12
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201586912460.jpg",
+    "nuscenes_index": 5343,
+    "scenario": "FORWARD_SLOW"
+  },
+  "clip_05344": {
+    "final_waypoint_m": [
+      0.977,
+      8.311
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201587412460.jpg",
+    "nuscenes_index": 5344,
+    "scenario": "FORWARD_MED"
+  },
+  "clip_05357": {
+    "final_waypoint_m": [
+      3.282,
+      17.928
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201593912460.jpg",
+    "nuscenes_index": 5357,
+    "scenario": "TURN_RIGHT"
+  },
+  "clip_05368": {
+    "final_waypoint_m": [
+      0.023,
+      23.779
+    ],
+    "first_frame": "samples/CAM_FRONT/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201599512460.jpg",
+    "nuscenes_index": 5368,
+    "scenario": "FORWARD_FAST"
+  }
+}
