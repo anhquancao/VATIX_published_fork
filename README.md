@@ -105,6 +105,19 @@ inference:
 hf download llvictorll/Vatix wan21/wan_2.1_vae.pth --repo-type model --local-dir ./ckpt
 ```
 
+### Inference
+
+Run the ready-made Hugging Face image-to-video example from the repository root:
+
+```bash
+python examples/inference_huggingface.py --input-image real_videos/context_frames/sample2_canada.png
+```
+
+The `--input-image` argument is a variable for the conditioning frame, so you can replace it with any other image path you want to use.
+
+This downloads the published `1B_traj` checkpoint and generate video
+`sample2_canada_future.mp4`.
+
 ## ▶️ Run
 
 Trajectory-conditioned (example):

@@ -1,5 +1,6 @@
-"""Generate future frames from sample2_canada.png using the HF checkpoint."""
+"""Generate future frames from a conditioning image using the HF checkpoint."""
 
+import argparse
 from pathlib import Path
 
 import imageio.v3 as iio
@@ -17,9 +18,27 @@ REPO_ID = "llvictorll/Vatix"
 CHECKPOINT_REVISION = "main"
 
 
-def main():
+def parse_args():
     repo_root = Path(__file__).resolve().parents[1]
-    image_path = repo_root / "real_videos" / "context_frames" / "sample2_canada.png"
+    default_image = repo_root / "real_videos" / "context_frames" / "sample2_canada.png"
+    parser = argparse.ArgumentParser(
+        description="Generate future frames from a conditioning image using the HF checkpoint."
+    )
+    parser.add_argument(
+        "--input-image",
+        type=str,
+        default=str(default_image),
+        help="Path to the conditioning image. Defaults to the sample2_canada.png context frame.",
+    )
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    repo_root = Path(__file__).resolve().parents[1]
+    image_path = Path(args.input_image)
+    if not image_path.is_absolute():
+        image_path = (repo_root / image_path).resolve()
     model_root = repo_root / "ckpt" / "huggingface_vatix"
 
     # Downloads about 9.5 GB: the transformer and its EMA weights.
