@@ -207,3 +207,5 @@ resume commands are documented in the [technical guide](docs/technical_guide.md)
 
 VATIX uses components from WAN and the NATIX Multi-Camera Driving Dataset.
 Training used HPC resources from IDRIS and EuroHPC MareNostrum 5.
+
+Copyright (c) 2026 Valeo. Victor Besnier. All rights reserved.
